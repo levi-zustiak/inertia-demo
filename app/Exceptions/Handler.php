@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
         $response = parent::render($request, $exception);
 
         if (
-            (App::environment('production'))
+            (App::environment('local'))
             && $request->header('X-Inertia')
             && in_array($response->status(), [500, 503, 404, 403])
         ) {
