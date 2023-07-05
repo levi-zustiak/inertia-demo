@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Inertia } from '@inertiajs/inertia';
-import { usePage } from '@inertiajs/inertia-react';
-import { usePrevious } from 'react-use';
+import { useState, useEffect, useRef } from 'react';
+import { router } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
+// import { usePrevious } from 'react-use';
 import SelectInput from '@/Shared/SelectInput';
 import pickBy from 'lodash/pickBy';
 
@@ -15,7 +15,7 @@ export default () => {
     trashed: filters.trashed || ''
   });
 
-  const prevValues = usePrevious(values);
+  // const prevValues = usePrevious(values);
 
   function reset() {
     setValues({
@@ -25,18 +25,18 @@ export default () => {
     });
   }
 
-  useEffect(() => {
-    // https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
-    if (prevValues) {
-      const query = Object.keys(pickBy(values)).length
-        ? pickBy(values)
-        : { remember: 'forget' };
-      Inertia.get(route(route().current()), query, {
-        replace: true,
-        preserveState: true
-      });
-    }
-  }, [values]);
+  // useEffect(() => {
+  //   // https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
+  //   if (prevValues) {
+  //     const query = Object.keys(pickBy(values)).length
+  //       ? pickBy(values)
+  //       : { remember: 'forget' };
+  //     router.get(route(route().current()), query, {
+  //       replace: true,
+  //       preserveState: true
+  //     });
+  //   }
+  // }, [values]);
 
   function handleChange(e) {
     const key = e.target.name;
@@ -106,7 +106,6 @@ export default () => {
           className="relative w-full px-6 py-3 rounded-r focus:outline-none focus:ring-2 focus:ring-indigo-400"
           autoComplete="off"
           type="text"
-          name="search"
           name="search"
           value={values.search}
           onChange={handleChange}

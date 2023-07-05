@@ -1,13 +1,6 @@
-import React from 'react';
 
-export default ({
-  label,
-  name,
-  className,
-  children,
-  errors = [],
-  ...props
-}) => {
+
+export default ({ label, name, className, errors = [], ...props }) => {
   return (
     <div className={className}>
       {label && (
@@ -15,14 +8,12 @@ export default ({
           {label}:
         </label>
       )}
-      <select
+      <input
         id={name}
         name={name}
         {...props}
-        className={`form-select ${errors.length ? 'error' : ''}`}
-      >
-        {children}
-      </select>
+        className={`form-input ${errors.length ? 'error' : ''}`}
+      />
       {errors && <div className="form-error">{errors}</div>}
     </div>
   );

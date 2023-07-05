@@ -1,74 +1,42 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-import { Inertia } from '@inertiajs/inertia';
-import { InertiaLink, usePage, useForm } from '@inertiajs/inertia-react';
+
+import { router } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import Layout from '@/Shared/Layout';
-import DeleteButton from '@/Shared/DeleteButton';
 import LoadingButton from '@/Shared/LoadingButton';
 import TextInput from '@/Shared/TextInput';
 import SelectInput from '@/Shared/SelectInput';
 import FileInput from '@/Shared/FileInput';
-import TrashedMessage from '@/Shared/TrashedMessage';
 
-const Edit = () => {
-  const { user } = usePage().props;
+const Create = () => {
   const { data, setData, errors, post, processing } = useForm({
-    first_name: user.first_name || '',
-    last_name: user.last_name || '',
-    email: user.email || '',
-    password: user.password || '',
-    owner: user.owner ? '1' : '0' || '0',
-    photo: '',
-
-    // NOTE: When working with Laravel PUT/PATCH requests and FormData
-    // you SHOULD send POST request and fake the PUT request like this.
-    _method: 'PUT'
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    owner: '0',
+    photo: ''
   });
 
   function handleSubmit(e) {
     e.preventDefault();
-
-    // NOTE: We are using POST method here, not PUT/PACH. See comment above.
-    post(route('users.update', user.id));
-  }
-
-  function destroy() {
-    if (confirm('Are you sure you want to delete this user?')) {
-      Inertia.delete(route('users.destroy', user.id));
-    }
-  }
-
-  function restore() {
-    if (confirm('Are you sure you want to restore this user?')) {
-      Inertia.put(route('users.restore', user.id));
-    }
+    post(route('users.store'));
   }
 
   return (
     <div>
-      <Helmet title={`${data.first_name} ${data.last_name}`} />
-      <div className="flex justify-start max-w-lg mb-8">
-        <h1 className="text-3xl font-bold">
-          <InertiaLink
+      <div>
+        <h1 className="mb-8 text-3xl font-bold">
+          <Link
             href={route('users')}
             className="text-indigo-600 hover:text-indigo-700"
           >
             Users
-          </InertiaLink>
-          <span className="mx-2 font-medium text-indigo-600">/</span>
-          {data.first_name} {data.last_name}
+          </Link>
+          <span className="font-medium text-indigo-600"> /</span> Create
         </h1>
-        {user.photo && (
-          <img className="block w-8 h-8 ml-4 rounded-full" src={user.photo} />
-        )}
       </div>
-      {user.deleted_at && (
-        <TrashedMessage onRestore={restore}>
-          This user has been deleted.
-        </TrashedMessage>
-      )}
       <div className="max-w-3xl overflow-hidden bg-white rounded shadow">
-        <form onSubmit={handleSubmit}>
+        <form name="createForm" onSubmit={handleSubmit}>
           <div className="flex flex-wrap p-8 -mb-8 -mr-6">
             <TextInput
               className="w-full pb-8 pr-6 lg:w-1/2"
@@ -125,16 +93,13 @@ const Edit = () => {
               onChange={photo => setData('photo', photo)}
             />
           </div>
-          <div className="flex items-center px-8 py-4 bg-gray-100 border-t border-gray-200">
-            {!user.deleted_at && (
-              <DeleteButton onDelete={destroy}>Delete User</DeleteButton>
-            )}
+          <div className="flex items-center justify-end px-8 py-4 bg-gray-100 border-t border-gray-200">
             <LoadingButton
               loading={processing}
               type="submit"
-              className="ml-auto btn-indigo"
+              className="btn-indigo"
             >
-              Update User
+              Create User
             </LoadingButton>
           </div>
         </form>
@@ -143,6 +108,6 @@ const Edit = () => {
   );
 };
 
-Edit.layout = page => <Layout children={page} />;
+Create.layout = page => <Layout title="Create User" children={page} />;
 
-export default Edit;
+export default Create;

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Icon from '@/Shared/Icon';
 
 export default ({ onRestore, children }) => {
