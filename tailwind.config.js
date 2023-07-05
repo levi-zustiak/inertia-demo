@@ -1,5 +1,9 @@
-module.exports = {
-  purge: ['./resources/views/**/*.blade.php', './resources/js/**/*.js'],
+export default {
+  content: [
+    './resources/**/*.blade.php',
+    './resources/**/*.js',
+    './resources/**/*.jsx',
+  ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
